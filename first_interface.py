@@ -1,40 +1,20 @@
 from flet import *
 
+from commands import emergency_button, share_button, home_button, profile, notif
 
-def emergency_button(e):
-    print("Emergency Button!")
+def create_ui(page: Page):
 
-def share_button(e):
-    print("Share")
-
-def home_button(e):
-    print("Home Button")
-
-def profile(e):
-    print("Profile")
-
-def notif(e):
-    print("Notification")
-
-def main(page: Page):
-    # Set page properties
-    page.window.width = 440
-    page.window.height = 956
-    page.window.resizable = False
-
-    # Background Image
     background = Container(
         content=Image(
-            src="bgnew.jpg",  # Replace with your image file name
-            fit=ImageFit.COVER  # Ensures the image covers the entire area
+            src="bgnew.jpg",
+            fit=ImageFit.FILL
         ),
-        expand=True
+        expand=True 
     )
 
     button_size = 250
     circle_des1 = button_size + 18
     circle_des2 = button_size + 35
-
 
     home_icon = Container(
         content=IconButton(
@@ -45,7 +25,6 @@ def main(page: Page):
         ),
         left=20,
         top=100
-
     )
 
     profile_icon = Container(
@@ -57,10 +36,9 @@ def main(page: Page):
         ),
         right=20,
         top=100
-
     )
 
-    notif_icon=Container(
+    notif_icon = Container(
         content=IconButton(
             icon=icons.NOTIFICATIONS,
             icon_size=35,
@@ -71,11 +49,11 @@ def main(page: Page):
         top=103
     )
 
-    share_icon=Container(
+    share_icon = Container(
         content=IconButton(
-           icon=icons.SHARE,
-           icon_size=50,
-           icon_color="#085F61"
+            icon=icons.SHARE,
+            icon_size=50,
+            icon_color="#085F61"
         ),
         left=120,
         top=598
@@ -152,6 +130,7 @@ def main(page: Page):
         right=30,
         top=600
     )
+
     share_des = Container(
         width=300,
         height=5,
@@ -161,25 +140,21 @@ def main(page: Page):
         left=50,
         top=665
     )
-#combination
-    # Add elements in a single Stack
-    page.add(
-        Stack(
-            controls=[
-                background, 
-                home_icon, 
-                profile_icon,
-                notif_icon,
-                circle_design2,
-                circle_design1,
-                btn,
-                share_btn,
-                share_icon,
-                share_des
-            ],
-            width=page.window.width,
-            height=page.window.height
-        )
-    )
 
-app(target=main)
+    return Stack(
+        controls=[
+            background, 
+            home_icon, 
+            profile_icon,
+            notif_icon,
+            circle_design2,
+            circle_design1,
+            btn,
+            share_btn,
+            share_icon,
+            share_des
+        ],
+        width=page.window.width,
+        height=page.window.height
+    
+    )
