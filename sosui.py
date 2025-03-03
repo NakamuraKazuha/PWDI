@@ -6,7 +6,7 @@ def vibrate_pattern():
     try:
         vibrator.vibrate(0.5)  # Vibrates for 500ms
     except NotImplementedError:
-        print("Vibration not supported on this device.")
+        print("Vibrating...")
 
 def create_emergency_interface(page):
     countdown_label = ft.Text("", size=24, color="black", weight=ft.FontWeight.BOLD)  # Black text
