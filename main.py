@@ -7,15 +7,16 @@ from splash import splash_screen
 from profile_page import create_profile_ui
 
 import os
-def main(page: Page):  
+def main(page: Page): 
     page.window.width = 440
     page.window.height = 956
     page.window.resizable = False
 
     page.fonts = {
-        "lale": "fonts/Lalezar-Regular.ttf",
-        "Chiller": "fonts/chiller.ttf",
+        "lalezar": "fonts/Lalezar-Regular.ttf", #font
     }
+
+
     page.update()
 
     page.clean()
