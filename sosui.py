@@ -1,5 +1,12 @@
 import flet as ft
 from sosbackend import SOSHandler, send_sos, get_gps_location, cancel_sos
+from plyer import vibrator
+
+def vibrate_pattern():
+    try:
+        vibrator.vibrate(0.5)  # Vibrates for 500ms
+    except NotImplementedError:
+        print("Vibration not supported on this device.")
 
 def create_emergency_interface(page):
     countdown_label = ft.Text("", size=24, color="black", weight=ft.FontWeight.BOLD)  # Black text
@@ -58,6 +65,7 @@ def create_emergency_interface(page):
     def start_sos_action():
         sos_main_button.bgcolor = "#b71c1c"  # Darker red when pressed
         sos_handler.start_countdown()
+        vibrate_pattern()  # Trigger vibration
         page.update()
 
     def cancel_sos_action():
