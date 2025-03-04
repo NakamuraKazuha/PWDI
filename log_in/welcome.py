@@ -1,58 +1,75 @@
-import flet as ft
+
+from flet import *
 
 def welcome_page(page, show_login, show_signup):
     """Landing page with Log in and Sign up buttons"""
 
     # Background container with image
-    background = ft.Container(
-        expand=True,
-        content=ft.Image(
+    background = Container(
+        content=Image(
             src="assets/bgnew.jpg",
-            fit=ft.ImageFit.COVER
-        )
+            fit=ImageFit.FILL
+        ),
+        expand=True
     )
 
-    # Title positioned manually
-    title = ft.Container(
-        content=ft.Text(
-            "PWD Independence",
-            text_align=ft.TextAlign.CENTER,
-            color="#003B5B",
-            size=28,
-            weight=ft.FontWeight.BOLD,
-        ),
-        left=50,  # Adjust X-axis position
-        top=100   # Adjust Y-axis position
+    logo = Container(
+        content=Image(src="assets/logo1.png", width=300, height=250),
+        left=10,
+        right=10,
+        top=50
     )
+
+   
 
     # Log in button positioned manually
-    login_button = ft.Container(
-        content=ft.ElevatedButton(
-            text="Log in",
-            bgcolor="#003B5B",
-            color="white",
-            width=200,
-            height=50,
-            on_click=lambda e: show_login(),
-        ),
-        left=100,
-        top=200
-    )
+    login_button = Container(
+    content=ElevatedButton(
+        text="Log in",
+        bgcolor="#F0FAEF",
+        color="#003B5B",
+        width=200,
+        height=50,
+        on_click=lambda e: show_login(),
+        style=ButtonStyle(
+            shape=RoundedRectangleBorder(radius=8) ,
+            text_style=TextStyle(
+                    size=20,
+                    weight=FontWeight.BOLD,
+                    font_family="Lalezar"
+                ) 
+        )
+    ),
+    left=50,
+    right=50,
+    top=370
+)
 
     # Sign up button positioned manually
-    signup_button = ft.Container(
-        content=ft.ElevatedButton(
+    signup_button =Container(
+        content=ElevatedButton(
             text="Sign up",
-            bgcolor="#006A8E",
-            color="white",
+            bgcolor="#F0FAEF",
+            color="#003B5B",
             width=200,
             height=50,
             on_click=lambda e: show_signup(),
+            style=ButtonStyle(
+            shape=RoundedRectangleBorder(radius=8),
+            text_style=TextStyle(
+                    size=20,
+                    weight=FontWeight.BOLD,
+                    font_family="Lalezar"
+                )   # Move shape inside ButtonStyle
+        )
         ),
-        left=100,
-        top=270  # Placed slightly below Log in button
+        left=50,
+        right=50,
+        top=450
     )
 
-    return ft.Stack(
-        controls=[background, title, login_button, signup_button]
+    return Stack(
+        controls=[background, logo, login_button, signup_button],
+        width=page.window.width,
+        height=page.window.height
     )
