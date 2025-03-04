@@ -1,9 +1,8 @@
 from flet import *
 import time
 import threading
-from first_interface import create_ui
 
-def splash_screen(page: Page):
+def splash_screen(page: Page, on_splash_end):
     """Displays the splash screen before transitioning to the main UI."""
     page.window.width = 440
     page.window.height = 956
@@ -12,16 +11,16 @@ def splash_screen(page: Page):
     # Background image (Full Screen)
     splash_background = Container(
         content=Image(
-            src="bgnew.jpg",  # image
-            fit=ImageFit.COVER  #scale
+            src="bgnew.jpg",  # Make sure this image exists
+            fit=ImageFit.COVER  # Cover the entire screen
         ),
         expand=True
     )
 
-    #Logo properties
+    # Logo Image (Centered + Animated)
     logo = Container(
         content=Image(
-            src="logo1.png",  # Ensure this image exists - assets
+            src="logo1.png",  # Ensure this image exists
             fit=ImageFit.CONTAIN  # Keep original proportions
         ),
         width=200,  # Adjust as needed
@@ -47,14 +46,11 @@ def splash_screen(page: Page):
     logo.opacity = 1  # Make the logo visible
     page.update()
 
-    # Function to transition from splash to main UI
-    def go_to_main():
+    # Function to transition from splash to welcome page
+    def go_to_welcome():
         time.sleep(3)  # Pause for 3 seconds
         page.clean()  # Clear splash screen
-        page.add(create_ui(page))  # Load main UI
+        on_splash_end()  # Call the callback to navigate to the welcome page
         page.update()
 
-    threading.Thread(target=go_to_main, daemon=True).start()
-
-# Run the app
-app(target=splash_screen)
+    threading.Thread(target=go_to_welcome, daemon=True).start()
