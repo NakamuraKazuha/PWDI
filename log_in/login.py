@@ -1,3 +1,4 @@
+
 import flet as ft
 from navigation import authenticate_user
 
