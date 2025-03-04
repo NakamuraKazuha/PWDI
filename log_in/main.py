@@ -16,7 +16,6 @@ def main(page: ft.Page):
     page.window.resizable = False
     page.bgcolor = "#EDF8ED"
 
-    # ✅ Define navigation functions first
     def show_login():
         page.clean()  # Clear the page before navigating
         page.add(login_page(page, show_signup, show_consent_page))

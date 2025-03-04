@@ -1,5 +1,9 @@
-# pages/legal.py
 import flet as ft
+from sqlalchemy.orm import sessionmaker
+from database import engine, Users
+
+Session = sessionmaker(bind=engine)
+session = Session()
 
 def legal_documentation_page(page, username):
     """Legal and Documentation page UI"""
@@ -8,14 +12,24 @@ def legal_documentation_page(page, username):
 
     def submit_click(e):
         if legal_terms_checkbox.value:
-            # Simulate the final submission of the form
-            message.value = "All steps completed. Thank you for your submission!"
-            message.color = "green"
-            page.update()
+            # Retrieve the user by name
+            user = session.query(Users).filter_by(name=username).first()
+
+            if user:
+                user.legal = True  # Store that the user has agreed
+                session.commit()
+
+                message.value = "All steps completed. Thank you for your submission!"
+                message.color = "green"
+            else:
+                message.value = "User not found in the database."
+                message.color = "red"
         else:
             message.value = "You must agree to the legal terms."
             message.color = "red"
-            page.update()
+        
+        page.update()
+
 
     return ft.Container(
         width=page.width,

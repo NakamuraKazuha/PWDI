@@ -1,21 +1,49 @@
-# pages/medical.py
 import flet as ft
+from sqlalchemy.orm import sessionmaker
+from database import engine, Profile 
+
+Session = sessionmaker(bind=engine)
+session = Session()
 
 def medical_mobility_page(page, username, show_medical_history_page):
     """Medical and Mobility Information page UI"""
-    medical_condition = ft.TextField(label="Medical Condition (if any)")
+    medical_conditions = [
+        "Psychological Disability",
+        "Mental Disability",
+        "Hearing Disability",
+        "Visual Disability",
+        "Learning Disability",
+        "Speech Impairment",
+        "Orthopedic Disability"
+    ]
+    
+    medical_condition = ft.RadioGroup(
+        content=ft.Column([
+            ft.Radio(value=condition, label=condition) for condition in medical_conditions
+        ])
+    )
+    
     mobility_issue = ft.TextField(label="Mobility Issues (if any)")
     message = ft.Text("", color="red")
 
     def next_click(e):
-        # Simulate saving the medical and mobility information
         if medical_condition.value or mobility_issue.value:
+            # Fetch the user profile
+            profile = session.query(Profile).filter_by(username=username).first()
+            if profile:
+                profile.medical_condition = medical_condition.value if medical_condition.value else None
+                profile.mobility_issues = mobility_issue.value if mobility_issue.value else None
+                session.commit()  # Save changes
+                print(f"Updated Profile: {username}, Medical: {profile.medical_condition}, Mobility: {profile.mobility_issues}")
+            else:
+                print("Profile not found!")
+
             show_medical_history_page(username)
         else:
             message.value = "Please provide information about your medical and mobility issues."
             message.color = "red"
             page.update()
-
+    
     return ft.Container(
         width=page.width,
         height=page.height,
@@ -32,6 +60,7 @@ def medical_mobility_page(page, username, show_medical_history_page):
                     size=24,
                     weight=ft.FontWeight.BOLD,
                 ),
+                ft.Text("Type of Disability:"),
                 medical_condition,
                 mobility_issue,
                 message,
