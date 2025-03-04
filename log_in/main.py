@@ -5,6 +5,8 @@ from profile import profile_setup_page
 from medical import medical_mobility_page
 from history import medical_history_page
 from legal import legal_documentation_page
+from splash import splash_screen
+from first_interface import create_ui
 
 def main(page: ft.Page):
     from login import login_page
@@ -15,6 +17,11 @@ def main(page: ft.Page):
     page.window.height = 915  # Standard height for Android phones
     page.window.resizable = False
     page.bgcolor = "#EDF8ED"
+
+    # Set fonts (from the second script)
+    page.fonts = {
+        "lalezar": "fonts/Lalezar-Regular.ttf",  # font
+    }
 
     def show_login():
         page.clean()  # Clear the page before navigating
@@ -42,9 +49,17 @@ def main(page: ft.Page):
 
     def show_legal_documentation_page(username):
         page.clean()
-        page.add(legal_documentation_page(page, username))
+        page.add(legal_documentation_page(page, username, show_main_ui))
 
-    # ✅ Now pass `show_login` and `show_signup` to `welcome_page`
-    page.add(welcome_page(page, show_login, show_signup))
+    def show_welcome_page():
+        page.clean()
+        page.add(welcome_page(page, show_login, show_signup))
 
-ft.app(target=main)
+    def show_main_ui():
+        page.clean()
+        page.add(create_ui(page))
+
+    # Start with the splash screen
+    splash_screen(page, show_welcome_page)
+
+ft.app(target=main, assets_dir="assets")
