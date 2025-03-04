@@ -5,7 +5,7 @@ from database import engine, Users
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def legal_documentation_page(page, username):
+def legal_documentation_page(page, username, on_submit):
     """Legal and Documentation page UI"""
     legal_terms_checkbox = ft.Checkbox(label="I agree to the legal terms and conditions.")
     message = ft.Text("", color="red")
@@ -21,6 +21,11 @@ def legal_documentation_page(page, username):
 
                 message.value = "All steps completed. Thank you for your submission!"
                 message.color = "green"
+                page.update()
+
+                # Navigate to the first interface after a short delay
+                page.clean()
+                on_submit()  # Call the callback to navigate to the first interface
             else:
                 message.value = "User not found in the database."
                 message.color = "red"
@@ -29,7 +34,6 @@ def legal_documentation_page(page, username):
             message.color = "red"
         
         page.update()
-
 
     return ft.Container(
         width=page.width,
