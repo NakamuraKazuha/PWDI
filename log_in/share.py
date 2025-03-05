@@ -3,7 +3,7 @@ import flet as ft
 from database import fetch_acc_users, remove_acc_user, fetch_auth_viewers, fetch_notifications, remove_auth_viewer, session, Notification, AuthorizedViewers, Users
 from functools import partial
 
-def share(page: ft.Page):
+def share_page(page: ft.Page, username):
     # Your existing share page implementation
     # Ensure it returns a UI component (e.g., a Container or Column)
 
@@ -28,7 +28,7 @@ def share(page: ft.Page):
         rebuild_acc_users_ui(owner_id)  
 
 
-    def rebuild_acc_users_ui(viewer_id): 
+    def rebuild_acc_users_ui(viewer_id, page): 
         accessible_users_column.controls.clear()
 
         accessible_users = fetch_acc_users(viewer_id)  # viewer_id to get accessible users
@@ -273,7 +273,7 @@ def share(page: ft.Page):
                                                 ft.icons.NOTIFICATIONS,
                                                 icon_size=30,
                                                 icon_color=icon_colors,
-                                                on_click=lambda e: toggle_notifications(True) #i still dont get why this needs to specify lambda
+                                                on_click=lambda e: toggle_notifications(e, page)
                                             )
                                         )
                                     ]
@@ -349,15 +349,19 @@ def share(page: ft.Page):
         animate=ft.animation.Animation(300,ft.AnimationCurve.EASE_IN_OUT)
     )
 
-    # Ask for the user ID!!!!! NOTE: TO DELETE ONCE NAA NA KA MELOOO
-    viewer_id = input("Enter your 6-digit User ID to check accessible users: ").strip()
-    if not (viewer_id.isdigit() and len(viewer_id) == 6):
-        print("Invalid ID. Must be a 6-digit number.")
-        return  # Exit if the input is invalid
+    def get_user_id(username):
+        user = session.query(Users).filter_by(name=username).first()
+        return user.user_id if user else None  # Returns user_id or None
 
-    viewer_id = int(viewer_id)  # Convert to integer for database queries
-    rebuild_auth_viewers_ui(viewer_id)  
-    rebuild_acc_users_ui(viewer_id)
+    viewer_id = get_user_id(username)
+
+    if viewer_id is not None:  # ✅ Ensure it's not None before converting
+        viewer_id = int(viewer_id)  # Convert to integer
+        rebuild_auth_viewers_ui(viewer_id)  
+        rebuild_acc_users_ui(viewer_id, page)
+    else:
+        print("Error: User not found!")  # ✅ Debugging message
+
 
     #initializing
     notification_controls = [] 
@@ -402,9 +406,10 @@ def share(page: ft.Page):
 
         notification_list.controls = notification_controls
         notification_list.update()
+        page.update() 
 
     notif_panel = ft.Container(
-        width=-5, 
+        width=0, 
         height=page.window.height,
         bgcolor="#F0FAEF",
         border_radius=35,
@@ -415,33 +420,28 @@ def share(page: ft.Page):
 
     # state sa toggle notifs
     is_notif_open = [False]
-    def toggle_notifications(e):
-        is_notif_open[0] = not is_notif_open[0] 
-        
-        #if i open ang notifications, it hides the search bar
+    def toggle_notifications(e, page):
+        is_notif_open[0] = not is_notif_open[0]
+
         if is_notif_open[0]:  
-            search.visible = False  #Hide search bar
-            search.value = ""  #clears the search
-            rebuild_notifications_ui(viewer_id)
-            rebuild_acc_users_ui(viewer_id)  # Ensure accessible users stay
-            rebuild_auth_viewers_ui(viewer_id)  # Ensure authorized viewers stay
-        
-        notif_panel.width = page.width * 0.4 if is_notif_open[0] else 0  # Show/hide notifications
+            search.visible = False  
+            search.value = ""  
+
+            rebuild_notifications_ui(viewer_id)  # Ensure notifications update correctly
+            
+            if viewer_id is not None:
+                rebuild_acc_users_ui(viewer_id, page)  
+                rebuild_auth_viewers_ui(viewer_id, page)
+            else:
+                print("Error: viewer_id is None")
+
+        # Keep notifications visible in both main UI and share page
+        notif_panel.width = page.width * 0.4 if is_notif_open[0] else 0
+        notif_panel.update() 
         page.update()
+
+
 
     # add the pages
     page.add(ft.Row([container, notif_panel], expand=True, spacing=0)) #samok the spacing diay thats why it has extra space
     page.update()
-
-
-    return ft.Container(
-        content=ft.Column(
-            controls=[
-                ft.Text("This is the Share Page", size=30, color="black"),
-                ft.ElevatedButton(
-                    "Go Back",
-                    on_click=lambda e: page.go("/")  # Navigate back to the first interface
-                )
-            ]
-        )
-    )

@@ -2,16 +2,18 @@ import flet as ft
 from welcome import welcome_page
 from consent import consent_page
 from profile import profile_setup_page
+from share import share_page 
 from medical import medical_mobility_page
 from history import medical_history_page
 from legal import legal_documentation_page
 from splash import splash_screen
 from first_interface import create_ui
-from share import share  # Import the share function
 
 def main(page: ft.Page):
     from login import login_page
     from signup import signup_page
+
+
 
     # Set Android phone screen size
     page.window.width = 412  # Standard width for Android phones
@@ -56,9 +58,14 @@ def main(page: ft.Page):
         page.clean()
         page.add(welcome_page(page, show_login, show_signup))
 
-    def show_main_ui():
+    def show_main_ui(username):
         page.clean()
-        page.add(create_ui(page))
+        page.add(create_ui(page, show_share_page, username))
+        
+    def show_share_page(page, username):  # ✅ Accepts page and username
+        page.clean()
+        page.add(share_page(page, username))
+
 
     # Define route change handler
     def route_change(route):
@@ -82,7 +89,7 @@ def main(page: ft.Page):
         elif page.route == "/main_ui":
             show_main_ui()
         elif page.route == "/share":
-            page.views.append(ft.View("/share", [share(page)]))  # Add the share page
+            show_share_page(page)
         page.update()
 
     # Handle pop (back button)

@@ -3,7 +3,7 @@ from flet import *
 
 from commands import emergency_button, share_button, home_button, profile, notif
 
-def create_ui(page: Page):
+def create_ui(page: Page, show_share_page, username):
 
     background = Container(
         content=Image(
@@ -54,7 +54,8 @@ def create_ui(page: Page):
         content=IconButton(
             icon=icons.SHARE,
             icon_size=50,
-            icon_color="#085F61"
+            icon_color="#085F61",
+            on_click=lambda e: show_share_page(e.page, username)
         ),
         left=120,
         top=598
@@ -111,7 +112,7 @@ def create_ui(page: Page):
     share_btn = Container(
         content=ElevatedButton(
             text="     SHARE",
-            on_click=share_button,
+            on_click=lambda e: share_button(e, username),
             bgcolor="#F0FAEF",
             color="#085F61",
             style=ButtonStyle(

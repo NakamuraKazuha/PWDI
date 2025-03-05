@@ -1,12 +1,12 @@
 from profile_page import create_profile_ui
-from share import share 
+from share import share_page
 
 def emergency_button(e):
     print("Emergency Button!")
 
-def share_button(e):
+def share_button(e, username):
     e.page.clean()  
-    e.page.add(share(e.page))
+    e.page.add(share_page(e.page, username))
     e.page.update()
 
 def home_button(e):

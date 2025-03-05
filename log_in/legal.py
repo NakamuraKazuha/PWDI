@@ -41,7 +41,7 @@ def legal_documentation_page(page, username, on_submit):
 
                 # Navigate to the first interface after a short delay
                 page.clean()
-                on_submit()  # Call the callback to navigate to the first interface
+                on_submit(username)  # Call the callback to navigate to the first interface
             else:
                 message.value = "User not found in the database."
                 message.color = "red"
