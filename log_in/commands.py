@@ -1,13 +1,13 @@
-
-
 from profile_page import create_profile_ui
+from share import share 
 
-#first interface connection to profile page
 def emergency_button(e):
     print("Emergency Button!")
 
 def share_button(e):
-    print("Share")
+    e.page.clean()  
+    e.page.add(share(e.page))
+    e.page.update()
 
 def home_button(e):
     print("Home Button")
