@@ -50,6 +50,8 @@ class Profile(Base):
     birth_date = Column(Date, nullable=False)
     medical_condition = Column(String, nullable=True) 
     mobility_issues = Column(String, nullable=True)  
+    address = Column(String, nullable=True) 
+    contact_number = Column(String, nullable=True) 
 
 class MedicalHistory(Base):
     __tablename__ = "medical_history"
