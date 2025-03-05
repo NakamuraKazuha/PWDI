@@ -7,7 +7,23 @@ session = Session()
 
 def legal_documentation_page(page, username, on_submit):
     """Legal and Documentation page UI"""
-    legal_terms_checkbox = ft.Checkbox(label="I agree to the legal terms and conditions.")
+    
+    page.title = "Legal & Documentation"
+    page.bgcolor = "#F0FAEF"  # Consistent background color
+
+    # Background Image
+    background = ft.Container(
+        content=ft.Image(src="assets/bgnew.jpg", fit=ft.ImageFit.COVER),
+        expand=True
+    )
+
+    # Logo
+    logo = ft.Image(src="assets/logo1.png", width=120, height=120)
+
+    legal_terms_checkbox = ft.Checkbox(
+    label="I agree to the legal terms and conditions.",
+    label_style=ft.TextStyle(color="#003B5B")  # Change color to dark blue
+)
     message = ft.Text("", color="red")
 
     def submit_click(e):
@@ -35,37 +51,38 @@ def legal_documentation_page(page, username, on_submit):
         
         page.update()
 
-    return ft.Container(
-        width=page.width,
-        height=page.height,
-        bgcolor="#F0FAEF",
-        border_radius=10,
-        content=ft.Column(
-            alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[
-                ft.Text(
-                    "Legal & Documentation",
-                    text_align=ft.TextAlign.CENTER,
-                    color="#003B5B",
-                    size=24,
-                    weight=ft.FontWeight.BOLD,
-                ),
-                ft.Text(
-                    "Please read and accept the legal terms before submitting.",
-                    text_align=ft.TextAlign.CENTER,
-                    size=18,
-                ),
-                legal_terms_checkbox,
-                message,
-                ft.ElevatedButton(
-                    text="Submit",
-                    bgcolor="#003B5B",
-                    color="white",
-                    width=200,
-                    height=50,
-                    on_click=submit_click,
-                ),
-            ],
-        ),
+    return ft.Stack(
+        controls=[
+            background,
+            ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    logo,
+                    ft.Text(
+                        "Legal & Documentation",
+                        text_align=ft.TextAlign.CENTER,
+                        color="#003B5B",  # Dark blue color for consistency
+                        size=24,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    ft.Text(
+                        "Please read and accept the legal terms before submitting.",
+                        text_align=ft.TextAlign.CENTER,
+                        size=18,
+                        color="#003B5B",  # Dark blue color for better readability
+                    ),
+                    legal_terms_checkbox,
+                    message,
+                    ft.ElevatedButton(
+                        text="Submit",
+                        bgcolor="#003B5B",
+                        color="white",
+                        width=200,
+                        height=50,
+                        on_click=submit_click,
+                    ),
+                ],
+            ),
+        ]
     )
