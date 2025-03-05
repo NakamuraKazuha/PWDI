@@ -7,6 +7,23 @@ session = Session()
 
 def medical_mobility_page(page, username, show_medical_history_page):
     """Medical and Mobility Information page UI"""
+
+    page.title = "Medical & Mobility Information"
+    page.bgcolor = "#F0FAEF"
+
+    # Background Image
+    background = ft.Container(
+        content=ft.Image(src="assets/bgnew.jpg", fit=ft.ImageFit.COVER),
+        expand=True
+    )
+
+    # Logo
+    logo = ft.Container(
+        content=ft.Image(src="assets/logo1.png", width=120, height=120),
+        alignment=ft.alignment.center
+    )
+
+    # Medical Conditions List
     medical_conditions = [
         "Psychological Disability",
         "Mental Disability",
@@ -16,24 +33,39 @@ def medical_mobility_page(page, username, show_medical_history_page):
         "Speech Impairment",
         "Orthopedic Disability"
     ]
-    
+
     medical_condition = ft.RadioGroup(
-        content=ft.Column([
-            ft.Radio(value=condition, label=condition) for condition in medical_conditions
-        ])
+    content=ft.Column(
+        [
+            ft.Radio(
+                value=condition, 
+                label=condition, 
+                label_style=ft.TextStyle(color="#003B5B", font_family="Lalezar")  # Change color here
+            ) 
+            for condition in medical_conditions
+        ],
+        alignment=ft.MainAxisAlignment.START
     )
-    
-    mobility_issue = ft.TextField(label="Mobility Issues (if any)")
+)
+
+    # Mobility Issues TextField
+    mobility_issue = ft.TextField(
+        label="Mobility Issues (if any)",
+        width=300,
+        text_style=ft.TextStyle(color="black")
+    )
+
+    # Message Display
     message = ft.Text("", color="red")
 
+    # Next Button Click Event
     def next_click(e):
         if medical_condition.value or mobility_issue.value:
-            # Fetch the user profile
             profile = session.query(Profile).filter_by(username=username).first()
             if profile:
                 profile.medical_condition = medical_condition.value if medical_condition.value else None
                 profile.mobility_issues = mobility_issue.value if mobility_issue.value else None
-                session.commit()  # Save changes
+                session.commit()
                 print(f"Updated Profile: {username}, Medical: {profile.medical_condition}, Mobility: {profile.mobility_issues}")
             else:
                 print("Profile not found!")
@@ -41,16 +73,16 @@ def medical_mobility_page(page, username, show_medical_history_page):
             show_medical_history_page(username)
         else:
             message.value = "Please provide information about your medical and mobility issues."
-            message.color = "red"
             page.update()
-    
-    return ft.Container(
-        width=page.width,
-        height=page.height,
+
+    # Main Content
+    form_container = ft.Container(
+        padding=ft.padding.all(20),
+        width=350,
         bgcolor="#F0FAEF",
         border_radius=10,
+        shadow=ft.BoxShadow(blur_radius=5, color=ft.colors.GREY_400),
         content=ft.Column(
-            alignment=ft.MainAxisAlignment.CENTER,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             controls=[
                 ft.Text(
@@ -60,7 +92,7 @@ def medical_mobility_page(page, username, show_medical_history_page):
                     size=24,
                     weight=ft.FontWeight.BOLD,
                 ),
-                ft.Text("Type of Disability:"),
+                ft.Text("Type of Disability:", color="black"),
                 medical_condition,
                 mobility_issue,
                 message,
@@ -73,5 +105,16 @@ def medical_mobility_page(page, username, show_medical_history_page):
                     on_click=next_click,
                 ),
             ],
-        ),
+        )
+    )
+
+    return ft.Stack(
+        controls=[
+            background,
+            ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[logo, form_container]
+            )
+        ]
     )
