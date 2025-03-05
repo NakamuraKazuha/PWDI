@@ -76,7 +76,7 @@ def create_profile_ui(page: Page):
     )
 #Full Name Container
     full_name = Container(
-        content=Text("Full Name: ",
+        content=Text("Full Name: Illyria Dy",
                      size=12,
                      weight=FontWeight.BOLD,
                      color="#ABC6C5",
@@ -93,7 +93,7 @@ def create_profile_ui(page: Page):
     )
 #Birthday Container
     birthday = Container(
-        content=Text("Date of Birth: ",
+        content=Text("Date of Birth: 09/01/2003",
                      size=12,
                      weight=FontWeight.BOLD,
                      color="#ABC6C5",
@@ -110,7 +110,7 @@ def create_profile_ui(page: Page):
     )
 #Gender Container
     gender = Container(
-        content=Text("Gender: ",
+        content=Text("Gender: Female",
                      size=12,
                      weight=FontWeight.BOLD,
                      color="#ABC6C5",
@@ -127,7 +127,7 @@ def create_profile_ui(page: Page):
     )
  #Contact Container    
     contact = Container(
-        content=Text("Contact Number: ",
+        content=Text("Contact Number: 09422955978",
                      size=12,
                      weight=FontWeight.BOLD,
                      color="#ABC6C5",
@@ -144,7 +144,7 @@ def create_profile_ui(page: Page):
     )
 #Address Container
     address = Container(
-        content=Text("Current Address: ",
+        content=Text("Current Address: UP Cebu",
                      size=12,
                      weight=FontWeight.BOLD,
                      color="#ABC6C5",
