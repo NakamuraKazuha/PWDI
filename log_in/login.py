@@ -60,7 +60,8 @@ def login_page(page, show_signup, show_consent_page):
         if success:
             show_consent_page(username.value)
     
-    login_button = ft.ElevatedButton(
+    login_button = ft.Container(
+    content=ft.ElevatedButton(
         text="Log In",
         bgcolor="#003B5B",
         color="white",
@@ -70,29 +71,55 @@ def login_page(page, show_signup, show_consent_page):
         style=ft.ButtonStyle(
             shape=ft.RoundedRectangleBorder(radius=8)
         ),
-    )
-    
-    signup_link = ft.TextButton(
+    ),
+    top=500,  # Adjust to move it up/down
+    left=0,
+    right=0,
+    alignment=ft.alignment.center
+)
+
+    signup_link = ft.Container(
+    content=ft.TextButton(
         "New to PWDI? Sign Up",
         on_click=lambda e: show_signup(),
-        style=ft.ButtonStyle(color="#003B5B")
-    )
+        style=ft.ButtonStyle(color="#003B5B"),
+    ),
+    top=560,   # Adjust this to move it down/up
+    left=0,
+    right=0,
+    alignment=ft.alignment.center
+)
+
     
-    username_text = ft.Text(
+    
+    
+    username_text = ft.Container(
+    content=ft.Text(
         value="User Name",
         size=17,
         weight=ft.FontWeight.BOLD,
         color="#003B5B",
         font_family="Lalezar",
-    )
+    ),
+    top=310,  # Adjust to move up/down
+    left=50,  # Adjust for horizontal positioning
+    alignment=ft.alignment.center_left  # Align text to the left
+)
+
     
-    password_text = ft.Text(
+    password_text = ft.Container(
+    content=ft.Text(
         value="Password",
         size=17,
         weight=ft.FontWeight.BOLD,
         color="#003B5B",
         font_family="Lalezar",
-    )
+    ),
+    top=395 ,  # Adjust for vertical position
+    left=50,  # Adjust for horizontal position
+    alignment=ft.alignment.center_left  # Align text to the left
+)
+
     
     input_fields = ft.Container(
         content=ft.Column(
